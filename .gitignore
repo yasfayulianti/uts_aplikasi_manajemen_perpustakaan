@@ -1,5 +1,9 @@
-# Object file
-*.o
+# Python cache files
+__pycache__/
+*.pyc
 
-# Ada Library Information
-*.ali
+# VS Code settings
+.vscode/
+
+# Environment variables
+.env
