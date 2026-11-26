@@ -17,8 +17,8 @@ from admin import Admin
 
 # Penyimpanan data sementara
 daftar_buku = [
-    BukuFiksi("B001", "Pulang", "Tere Liye", 3, "Aksi/Drama"),
-    BukuNonFiksi("B002", "Pemrogoraman Berbasis Objek", "Mahardika Abdi dkk", 4, "Informatika")
+    BukuFiksi("B001", "Pulang", "Tere Liye", 3, "Aksi/Drama", "Republika", 2015),
+    BukuNonFiksi("B002", "Pemrogoraman Berbasis Objek", "Mahardika Abdi dkk", 4, "Informatika", "UMSU Press", 2025)
 ]
 
 daftar_anggota = [Anggota("A001", "Yasfa", "Arcamanik, Bandung", "yasfayuliantinazia@gmail.com")]
@@ -87,36 +87,36 @@ def admin_tambah():
             print("Kode kosong / sudah dipakai.")
             return
         judul = input("Judul        :").strip()
-        penulis = input("Penulis        :").strip()
-        stok = input_angka("Stok        :")
+        penulis = input("Penulis      :").strip()
+        stok = input_angka("Stok         :")
         jenis = input("Jenis (1=Fiksi, 2=Non-Fiksi):").strip()
         # try/exceept menangkap ValueError dari constructor (data tidak valid)
         try:
             if jenis == "1":
                 # Objek subclass BukuFiksi disimpan di list bertipe Buku
                 daftar_buku.append(BukuFiksi(kode, judul, penulis, stok,            
-                                             input("Genre       :")))
+                                             input("Genre        :"), input("Penerbit     :"), input("Tahun Terbit :")))
             elif jenis == "2":
                 daftar_buku.append(BukuNonFiksi(kode, judul, penulis, stok,
-                                                input("Bidang ilmu      :")))   
+                                                input("Bidang ilmu  :"), input("Penerbit     :"), input("Tahun Terbit :")))   
             else:
                 print("Jenis tidak valid.") 
                 return
             print("Buku berhasil ditambahkan.")
         except ValueError as e:
-            print("Gagal:", e)
+            print("Gagal        :", e)
     elif k == "2":
         id_a = input("Id Anggota        :").strip()
         if not id_a or cari_anggota(id_a):
             print("Id kosong / sudah dipakai.")
             return
         try: 
-            daftar_anggota.append(Anggota(id_a, input("Nama     :"),
-                                          input("Alamat     :"),
-                                          input("Email      :")))
+            daftar_anggota.append(Anggota(id_a, input("Nama         :"),
+                                          input("Alamat       :"),
+                                          input("Email        :")))
             print("Anggota berhasil ditambahkan.")
         except ValueError as e:
-            print("Gagal:", e)
+            print("Gagal        :", e)
     else:
         print("Pilihan tidak valid.")
 
@@ -148,7 +148,7 @@ def admin_cari():
                   or kata in a.get_id_anggota().lower()]
     elif k == "3":
         ketemu = [p for p in daftar_pinjam
-                  if kata in p.get_kode_pinjaml().lower()
+                  if kata in p.get_kode_pinjam().lower()
                   or kata in p.get.buku().get_penulis().lower()
                   or kata in p.get_anggota().get_nama().lower()
                   or kata in p.get_buku().get_judul().lower()]
@@ -167,6 +167,8 @@ def admin_ubah_buku():
     print("\n(kosongkan jika tidak diubah)")
     ubah_jika_diisi("Judul", b.ubah_judul)
     ubah_jika_diisi("Penulis", b.ubah_penulis)
+    ubah_jika_diisi("Penerbit", b.ubah_penerbit)
+    ubah_jika_diisi("Tahun Terbit", b.ubah_tahun_terbit)
     stok = input("Stok baru (kosongkan jika tidak diubah):").strip()
     if stok:
         print("Stok:", end=" ")
@@ -176,6 +178,9 @@ def admin_ubah_buku():
         ubah_jika_diisi("Genre", b.ubah_genre)
     elif isinstance(b, BukuNonFiksi):
         ubah_jika_diisi("Bidang", b.ubah_bidang)
+
+    ubah_jika_diisi("Penerbit", b.ubah_penerbit)
+    ubah_jika_diisi("Tahun Terbit", b.ubah_tahun_terbit)
 
 # Menu 5: Cek status buku/anggota/peminjaman
 def admin_cek_status():
